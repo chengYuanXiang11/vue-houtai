@@ -1,59 +1,41 @@
 <template>
+  <div class="statistics">
+    <el-row>
+      <el-col>
+        <el-col :span="18">
+          dd
+        </el-col>
+        <el-col :span="6">
+          <v-chart :style="{width:'100%'}" :options="polar"/>
+          <v-chart :style="{width:'100%'}" :options="polar2"/>
+        </el-col>
+      </el-col>
+      <el-col>
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+    <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+    <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+    <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+  </el-tabs>
+      </el-col>
+    </el-row>
 
-
-
-<!-- 首页 -->
-  <div class="home">
-      <el-container  >
-  <el-aside width="auto" class="home_aside"  >
-      <ZNav ></ZNav>
-  </el-aside>
-  <el-container class="home_container">
-    <el-col :xs={offset:0} :sm={offset:2}>
-         <el-header class="home_header">
-                    <Snav/>
-                
-            </el-header>
-
-    <el-main class="home_main">
-      
-         <router-view></router-view>
-    </el-main>
-    <el-footer  height="auto" class="home_footer">
-        <Down/>
-    </el-footer>
-    </el-col>
-           
-  </el-container>
-</el-container>
-    <div class="hello">
-
-
-  </div>
-    
   </div>
 </template>
-
 <script>
-
-// @ is an alias to /src
-import ZNav from '@/components/ZNav'
-import Snav from '@/components/Snav'
-import Down from './Down'
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/component/polar'
+import 'echarts/lib/chart/gauge';
 export default {
-  name: 'Home',
-  components: {
-    ZNav,
-   Snav,
-   Down
-    // 'v-chart': ECharts
+    name:'statistics',
+     components: {
+    'v-chart': ECharts
   },
-   data(){
-       
+    data(){ 
       let colors = ['#5793f3', '#d14a61', '#675bba'];
-    return {
-         screenHeight: document.body.clientHeight,
-        wapperHeight:'200px',
+      return{
+         activeName: 'first',
       polar: {
          color: colors,
 
@@ -165,14 +147,14 @@ export default {
             ]
         }
       }
-      },
- 
-  props: {
-    msg: String
-  }
+    },
+     methods: {
+      handleClick(tab, event) {
+        console.log(tab, event);
+      }
+    }
 }
 </script>
-<style scoped lang="less">
-@import './css/heome.css';
-</style>
+<style lang="less" scoped>
 
+</style> 

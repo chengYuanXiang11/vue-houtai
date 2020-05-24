@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    height:100%;
+    }
+.h100{
+    height: 100%;
+}
+.znav_Fullheight{
+    position: fixed;
+    font-size: 0.3rem; 
+     min-width: 200px;
+}
