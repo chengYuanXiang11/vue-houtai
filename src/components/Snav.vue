@@ -2,28 +2,29 @@
 <!-- 顶部导航 -->
     <div id="sanv" >
       <el-row class="snav_content">
-      <el-col :span="18" :style="{position:'fixed'}">
-            <el-menu  class="el-menu-demo" mode="horizontal" @select="handleSelect"
-      :xs={span:0} :sm={span:5}
-        
+      <el-col  class="snav_header" :span="22" :offset="1" :xs="{span:24,offset:0}">
+            <el-menu  class="el-menu-demo" mode="horizontal" 
+         :xs={span:0} :sm={span:5}
+           :router="true"
         :default-active="$route.path"
             :unique-opened='true'>
-            <el-col :span="3" >
-              <el-menu-item index="1">
-                      <i class="el-icon-s-fold"></i>
+
+            <el-col :span="3">
+              <el-menu-item index="1" @click="xianyin()">
+                      <i class="el-icon-s-fold">导航</i>
                     </el-menu-item>
             </el-col>
-       <el-col :span="3" >
-      <el-menu-item index="2">
-            <i class="el-icon-refresh-left"></i>
-        </el-menu-item>
-       </el-col>
-       <el-col :span="5" :offset="13">
+            
+
+       <el-col :span="5" :offset="16" class="caozuo">
            <el-submenu index="3">
-    <template slot="title">我的工作台</template>
-    <el-menu-item index="3-1">选项1</el-menu-item>
-    <el-menu-item index="3-2">选项2</el-menu-item>
-    <el-menu-item index="3-3">选项3</el-menu-item>
+    <template slot="title">
+     
+       <span>{{this.$store.state.name}}</span>
+    </template>
+    <el-menu-item index="geren">个人中心</el-menu-item>
+    <el-menu-item index="ChangePassword">修改密码</el-menu-item>
+    <el-menu-item @click="tuichu">退出登录</el-menu-item>
   
   </el-submenu>
        </el-col>
@@ -40,13 +41,18 @@ export default {
     name:'snav',
     data(){
       return{
+        keys:true,
          activeIndex: '1',
         activeIndex2: '1'
       }
     },
      methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+       xianyin(){
+         this.$store.commit('xianyin')
+       },
+      tuichu(){
+        localStorage.removeItem("token")
+        this.$router.push('/')
       }
     }
 }
@@ -55,8 +61,10 @@ export default {
 .snav_content{
   font-size: 0.3rem;
 }
-// #sanv{
-//   position: fixed;
-//     width: 80%;
-// }
+.caozuo li{
+  width: 100%;
+}
+img{
+  width:50%
+}
 </style> 

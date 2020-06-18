@@ -1,170 +1,172 @@
-// // 基准大小（可随意指定，影响rem的数值）
-// const baseSize = 75
-// // 设置 rem 函数
-// function setRem() {
-//   // 当前页面宽度相对于 750 宽的缩放比例，可根据自己需要修改。
-//   const scale = document.documentElement.clientWidth / 750
-//   // 设置页面根节点字体大小
-//   document.documentElement.style.fontSize = baseSize * Math.min(scale, 2) + 'px'
-// }
-// // 初始化
-// setRem()
-// // 改变窗口大小时重新设置 rem
-// window.onresize = function() {
-//   setRem()
-// }
-!function(win, lib) {
-  var timer,
-      doc     = win.document,
-      docElem = doc.documentElement,
+// rem等比适配配置文件
+// 基准大小
+const baseSize = 16
+// 设置 rem 函数
+function setRem () {
+  // 当前页面宽度相对于 1920宽的缩放比例，可根据自己需要修改。
+  const scale = document.documentElement.clientWidth / 1920
+  // 设置页面根节点字体大小（“Math.min(scale, 2)” 指最高放大比例为2，可根据实际业务需求调整）
+  document.documentElement.style.fontSize = baseSize * Math.min(scale, 2) + 'px'
+}
+// 初始化
+setRem()
+// 改变窗口大小时重新设置 rem
+window.onresize = function () {
+  setRem()
+}
 
-      vpMeta   = doc.querySelector('meta[name="viewport"]'),
-      flexMeta = doc.querySelector('meta[name="flexible"]'),
+// !function(win, lib) {
+//   var timer,
+//       doc     = win.document,
+//       docElem = doc.documentElement,
 
-      dpr   = 0,
-      scale = 0,
+//       vpMeta   = doc.querySelector('meta[name="viewport"]'),
+//       flexMeta = doc.querySelector('meta[name="flexible"]'),
 
-      flexible = lib.flexible || (lib.flexible = {});
+//       dpr   = 0,
+//       scale = 0,
 
-  // 设置了 viewport meta
-  if (vpMeta) {
+//       flexible = lib.flexible || (lib.flexible = {});
 
-      console.warn("将根据已有的meta标签来设置缩放比例");
-      var initial = vpMeta.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
+//   // 设置了 viewport meta
+//   if (vpMeta) {
 
-      if (initial) {
-          scale = parseFloat(initial[1]); // 已设置的 initialScale
-          dpr = parseInt(1 / scale);      // 设备像素比 devicePixelRatio
-      }
+//       console.warn("将根据已有的meta标签来设置缩放比例");
+//       var initial = vpMeta.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
 
-  }
-  // 设置了 flexible Meta
-  else if (flexMeta) {
-      var flexMetaContent = flexMeta.getAttribute("content");
-      if (flexMetaContent) {
+//       if (initial) {
+//           scale = parseFloat(initial[1]); // 已设置的 initialScale
+//           dpr = parseInt(1 / scale);      // 设备像素比 devicePixelRatio
+//       }
 
-          var initial = flexMetaContent.match(/initial\-dpr=([\d\.]+)/),
-              maximum = flexMetaContent.match(/maximum\-dpr=([\d\.]+)/);
+//   }
+//   // 设置了 flexible Meta
+//   else if (flexMeta) {
+//       var flexMetaContent = flexMeta.getAttribute("content");
+//       if (flexMetaContent) {
 
-          if (initial) {
-              dpr = parseFloat(initial[1]);
-              scale = parseFloat((1 / dpr).toFixed(2));
-          }
+//           var initial = flexMetaContent.match(/initial\-dpr=([\d\.]+)/),
+//               maximum = flexMetaContent.match(/maximum\-dpr=([\d\.]+)/);
 
-          if (maximum) {
-              dpr = parseFloat(maximum[1]);
-              scale = parseFloat((1 / dpr).toFixed(2));
-          }
-      }
-  }
+//           if (initial) {
+//               dpr = parseFloat(initial[1]);
+//               scale = parseFloat((1 / dpr).toFixed(2));
+//           }
 
-  // viewport 或 flexible
-  // meta 均未设置
-  if (!dpr && !scale) {
-      // QST
-      // 这里的 第一句有什么用 ?
-      // 和 Android 有毛关系 ?
-      var u = (win.navigator.appVersion.match(/android/gi), win.navigator.appVersion.match(/iphone/gi)),
-          _dpr = win.devicePixelRatio;
+//           if (maximum) {
+//               dpr = parseFloat(maximum[1]);
+//               scale = parseFloat((1 / dpr).toFixed(2));
+//           }
+//       }
+//   }
 
-      // 所以这里似乎是将所有 Android 设备都设置为 1 了
-      dpr = u ? ( (_dpr >= 3 && (!dpr || dpr >= 3))
-                      ? 3
-                      : (_dpr >= 2 && (!dpr || dpr >= 2))
-                          ? 2
-                          : 1
-                )
-              : 1;
+//   // viewport 或 flexible
+//   // meta 均未设置
+//   if (!dpr && !scale) {
+//       // QST
+//       // 这里的 第一句有什么用 ?
+//       // 和 Android 有毛关系 ?
+//       var u = (win.navigator.appVersion.match(/android/gi), win.navigator.appVersion.match(/iphone/gi)),
+//           _dpr = win.devicePixelRatio;
 
-      scale = 1 / dpr;
-  }
+//       // 所以这里似乎是将所有 Android 设备都设置为 1 了
+//       dpr = u ? ( (_dpr >= 3 && (!dpr || dpr >= 3))
+//                       ? 3
+//                       : (_dpr >= 2 && (!dpr || dpr >= 2))
+//                           ? 2
+//                           : 1
+//                 )
+//               : 1;
 
-  docElem.setAttribute("data-dpr", dpr);
+//       scale = 1 / dpr;
+//   }
 
-  // 插入 viewport meta
-  if (!vpMeta) {
-      vpMeta = doc.createElement("meta");
+//   docElem.setAttribute("data-dpr", dpr);
+
+//   // 插入 viewport meta
+//   if (!vpMeta) {
+//       vpMeta = doc.createElement("meta");
        
-      vpMeta.setAttribute("name", "viewport");
-      vpMeta.setAttribute("content",
-          "initial-scale=" + scale + ", maximum-scale=" + scale + ", minimum-scale=" + scale + ", user-scalable=no");
+//       vpMeta.setAttribute("name", "viewport");
+//       vpMeta.setAttribute("content",
+//           "initial-scale=" + scale + ", maximum-scale=" + scale + ", minimum-scale=" + scale + ", user-scalable=no");
 
-      if (docElem.firstElementChild) {
-          docElem.firstElementChild.appendChild(vpMeta)
-      } else {
-          var div = doc.createElement("div");
-          div.appendChild(vpMeta);
-          doc.write(div.innerHTML);
-      }
-  }
+//       if (docElem.firstElementChild) {
+//           docElem.firstElementChild.appendChild(vpMeta)
+//       } else {
+//           var div = doc.createElement("div");
+//           div.appendChild(vpMeta);
+//           doc.write(div.innerHTML);
+//       }
+//   }
 
-  function setFontSize() {
-      var winWidth = docElem.getBoundingClientRect().width;
+//   function setFontSize() {
+//       var winWidth = docElem.getBoundingClientRect().width;
 
-      if (winWidth / dpr > 540) {
-          (winWidth = 540 * dpr);
-      }
+//       if (winWidth / dpr > 540) {
+//           (winWidth = 540 * dpr);
+//       }
 
-      // 根节点 fontSize 根据宽度决定
-      var baseSize = winWidth / 10;
+//       // 根节点 fontSize 根据宽度决定
+//       var baseSize = winWidth / 10;
 
-      docElem.style.fontSize = baseSize + "px";
-      flexible.rem = win.rem = baseSize;
-  }
+//       docElem.style.fontSize = baseSize + "px";
+//       flexible.rem = win.rem = baseSize;
+//   }
 
-  // 调整窗口时重置
-  win.addEventListener("resize", function() {
-      clearTimeout(timer);
-      timer = setTimeout(setFontSize, 300);
-  }, false);
+//   // 调整窗口时重置
+//   win.addEventListener("resize", function() {
+//       clearTimeout(timer);
+//       timer = setTimeout(setFontSize, 300);
+//   }, false);
 
    
-  // 这一段是我自己加的
-  // orientationchange 时也需要重算下吧
-  win.addEventListener("orientationchange", function() {
-      clearTimeout(timer);
-      timer = setTimeout(setFontSize, 300);
-  }, false);
+//   // 这一段是我自己加的
+//   // orientationchange 时也需要重算下吧
+//   win.addEventListener("orientationchange", function() {
+//       clearTimeout(timer);
+//       timer = setTimeout(setFontSize, 300);
+//   }, false);
 
 
-  // pageshow
-  // keyword: 倒退 缓存相关
-  win.addEventListener("pageshow", function(e) {
-      if (e.persisted) {
-          clearTimeout(timer);
-          timer = setTimeout(setFontSize, 300);
-      }
-  }, false);
+//   // pageshow
+//   // keyword: 倒退 缓存相关
+//   win.addEventListener("pageshow", function(e) {
+//       if (e.persisted) {
+//           clearTimeout(timer);
+//           timer = setTimeout(setFontSize, 300);
+//       }
+//   }, false);
 
-  // 设置基准字体
-  if ("complete" === doc.readyState) {
-      doc.body.style.fontSize = 12 * dpr + "px";
-  } else {
-      doc.addEventListener("DOMContentLoaded", function() {
-          doc.body.style.fontSize = 12 * dpr + "px";
-      }, false);
-  }
+//   // 设置基准字体
+//   if ("complete" === doc.readyState) {
+//       doc.body.style.fontSize = 12 * dpr + "px";
+//   } else {
+//       doc.addEventListener("DOMContentLoaded", function() {
+//           doc.body.style.fontSize = 12 * dpr + "px";
+//       }, false);
+//   }
 
-  setFontSize();
+//   setFontSize();
 
-  flexible.dpr = win.dpr = dpr;
+//   flexible.dpr = win.dpr = dpr;
 
-  flexible.refreshRem = setFontSize;
+//   flexible.refreshRem = setFontSize;
 
-  flexible.rem2px = function(d) {
-      var c = parseFloat(d) * this.rem;
-      if ("string" == typeof d && d.match(/rem$/)) {
-          c += "px";
-      }
-      return c;
-  };
+//   flexible.rem2px = function(d) {
+//       var c = parseFloat(d) * this.rem;
+//       if ("string" == typeof d && d.match(/rem$/)) {
+//           c += "px";
+//       }
+//       return c;
+//   };
 
-  flexible.px2rem = function(d) {
-      var c = parseFloat(d) / this.rem;
+//   flexible.px2rem = function(d) {
+//       var c = parseFloat(d) / this.rem;
        
-      if ("string" == typeof d && d.match(/px$/)) {
-          c += "rem";
-      }
-      return c;
-  }
-}(window, window.lib || (window.lib = {}));
+//       if ("string" == typeof d && d.match(/px$/)) {
+//           c += "rem";
+//       }
+//       return c;
+//   }
+// }(window, window.lib || (window.lib = {}));
