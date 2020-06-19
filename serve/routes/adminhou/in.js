@@ -15,14 +15,14 @@ router.post('/add',async(req,res)=>{
   const f = await Itemize.findOne({
     "category":req.body.category
   })
-  console.log(f)
+ 
   if(!f){
      const cd =await Itemize.create({"category":req.body.category})
     // console.log('dd')
   }
     //创建商品
    const model= await  Category.create(req.body)
-console.log(model)
+
     //根据商品查找分类id
    const m = await Itemize.findOne({
     "category":req.body.category
@@ -49,7 +49,7 @@ router.post('/d1',async(req,res)=>{
 //查询所有商品数据
 router.post('/df/',async(req,res)=>{
 
-  console.log(req.body)
+
   const a = req.body.username
  
     const m = await Category.aggregate([
@@ -99,9 +99,9 @@ router.post('/df/',async(req,res)=>{
 router.post('/dfinde',async(req,res)=>{
     // const Model = require(`../../models/${req.params.resource}`)
    const m = await Itemize.find()
-   console.log(m)
+
    const mode=await Category.findById(m.id)
-   console.log(mode)
+ 
    res.send(mode)
 })
 //根据id修改商品信息
@@ -109,7 +109,7 @@ router.put("/test",async (req, res) => {
     const article = await Category.findByIdAndUpdate(req.body._id, req.body)
     // .select('+passsword')
     
-    console.log(req.body)
+   
     res.send(article)
 })
 //根据id删除商品信息
@@ -120,9 +120,7 @@ router.delete("/del/:id", async(req, res) => {
 
 //查询各个角色分类下的数据
 router.post("/filterHandler",async(req,res)=>{
-  console.log(req.body)
-  console.log(req.body.category.label)
-  console.log(req.body.username)
+  
   if(req.body.category.label){
     await Category.find({$and:[{'category': req.body.category.label},{'username':req.body.username}]},null,function (err, comment) {
  
@@ -159,7 +157,7 @@ router.post('/fen', async(req, res) => {
   
   const keyword = req.body.keyword // 获取查询的字段
 const reg = new RegExp(keyword, 'i') //不区分大小写
-console.log(reg)
+
   //  const ac=await Category.find({name:{$regex:reg}})
   const ac=await Category.find({$and:[{name:{$in:reg}},{'username':req.body.username}]},null,function (clubErr, clubDoc) {
     res.send(clubDoc)

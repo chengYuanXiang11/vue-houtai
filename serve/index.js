@@ -56,7 +56,7 @@ app.use(function(req, res, next) {
 // app.use(require('cors')())
 app.use(express.json())
 //图片等静态文件需要静态托管 
-
+app.use('/admin',express.static(__dirname +'/public'))
 app.use('/uploads',express.static(__dirname +'/uploads'))
 
 require('./plugins/db/db')(app)//连接数据库
@@ -99,6 +99,7 @@ app.use(`/api/reply`,Reply)
 
 const multer = require('multer')
 const upload = multer({ dest:__dirname +'/uploads'})
+
 //上传图片
 app.post('/api/upload',upload.single('file'),async(req,res)=>{
   console.log(req)

@@ -211,7 +211,7 @@ background-size:100% 100%;
 }
 .dengcol{
   background: #f7e9c2;
- margin: 0 25%;
+  margin: 0 25%;
     float: left;
 }
 .zidong{

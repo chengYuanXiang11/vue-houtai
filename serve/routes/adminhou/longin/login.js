@@ -17,7 +17,7 @@ const jiami = async(req,res,next)=>{
         bcrypt.hash(req.body.password, salt, function(err, hash) {
             if (err) return next(err);         
             // 使用hash覆盖明文密码
-            console.log(hash)
+          
             req.body.password= hash;
            
             next()
@@ -32,11 +32,11 @@ const jiami = async(req,res,next)=>{
   const auth = async(req,res,next)=>{
     //前端传入    接收token
   const raw = String(req.headers.authorization || '').split(' ').pop()
-  console.log(raw)
+ 
     try {
       const tokenDate = jwt.verify(raw,SECRET)
     
-       console.log('111111111111')
+      
   req.user = await Login.findById(tokenDate._id)
       // 找到用户相关信息，并返回
       // 继续执行接口
@@ -141,12 +141,11 @@ router.put("/test",async (req, res) => {
 //玩一下ckooie
 router.post('/cookies', async(req,res)=>{
     
-    //   let c= JSON.parse(req.body)
-      console.log(req.body)
+   
 
         req.session.isFirst = req.body;
-       console.log(req.session.id)
-        // res.cookie('isFirst',req.session.id,{ maxAge: 6000 * 1000, singed: true});
+      
+       
          res.send(); 
 });
 
@@ -178,7 +177,7 @@ router.post("/ChangePassword",jiami,async(req,res)=>{
 router.post("/states",async(req,res)=>{
     const article =  await Login.updateOne({"_id":req.body._id}, {"state":req.body.state})
     res.send(article)
-  console.log(req.body)
+ 
 })
 //搜索
 router.post('/sou', async(req, res) => {

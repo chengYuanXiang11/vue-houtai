@@ -19,12 +19,13 @@ import Debounce from './views/custom/antiShake'
 // import http from './http/http.js'
 //设置全局axios
 // Vue.prototype.$http = http
-Vue.prototype.$ajax = axios
+// Vue.prototype.$ajax = axios
 // 全局axios跳转时自动加上路径前缀
-// Vue.prototype.$http = axios.create({
-//   baseURL:'http://localhost:3001',
-//   timeout:5000,
-// })
+Vue.prototype.$ajax = axios.create({
+  baseURL: process.env.VUE_APP_API_URL || '',
+  // baseURL:'http://localhost:8080',
+  timeout:5000,
+})
 axios.defaults.withCredentials = true;//每次请求，无论是否跨域，都带上cookie信息
 
 // // 发送请求前，携带token,用于验证用户名密码等

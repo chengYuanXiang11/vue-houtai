@@ -2,9 +2,13 @@
 // const postcss = px2rem({
 //   remUnit: 16   // 基准大小 baseSize，需要和rem.js中相同
 // })
-
-module.exports = {
-
+module.exports = {//输出文件路径
+   
+  outputDir: __dirname+ '/serve/public/',
+  //基本路径 
+  publicPath: process.env.NODE_ENV === 'production' 
+  ? '/admin/' 
+  : '/',
   devServer: {
     port:8080,
     proxy: {

@@ -31,8 +31,7 @@ router.post('/profile',auth,async(req,res) =>{
 router.put("/test", async (req, res) => {
     const article = await Login.findByIdAndUpdate(req.body._id, req.body)
     // .select('+passsword')
-    console.log(req.body._id)
-    console.log(req.body)
+   
     res.send(article)
 })
 
