@@ -25,6 +25,7 @@ export default {
             }
         },
      created(){
+       console.log( this.$store)
        if(window.innerWidth<780){
          this.$store.state.showPassZ = false
         
@@ -69,8 +70,8 @@ export default {
 }
 </script>
 <style lang="less">
-[v-cloak] {
-    display: none;
+[v-cloak]{
+    display:none !important;
 }
 html,body,#app{
   background-color: #f5f7f9;
@@ -84,6 +85,26 @@ body{margin:0px;padding:0px;}
   color: #2c3e50;
  
 }
+.wares{
+ animation:framse 2s ease-in-out 0s 1 alternate forwards;
+
+  }
+   @keyframes framse {
+           0%{
+          //  opacity:0 ;
+              position: relative;
+    left: 3000px;
+            }
+           50%{
+          //  opacity:0 ;
+              position: relative;
+    left:1500px;
+            }
+               100%{
+                position: relative;
+    left: 0px;
+            }
+        }
 .h100{
   height: 100%;
 }

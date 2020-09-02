@@ -1,5 +1,5 @@
 <template>
-  <div id="adopt">
+  <div id="adopt" class="wares">
 
        <el-row>
      <el-col :span="4" :offset="1" :xs="{span:24,offset:0}" class="bord">
@@ -111,7 +111,7 @@
                       :before-close="handleClose">
                       <span>是否要改变该用户登录状态</span>
                       <span slot="footer" class="dialog-footer">
-                        <el-button @click="no()">取 消</el-button>
+                        <el-button @click="no">取 消</el-button>
                         <el-button type="primary" @click="ok()">确 定</el-button>
                       </span>
                     </el-dialog>
@@ -187,7 +187,7 @@ export default {
            ImageExtend: {  // 如果不作设置，即{} 则依然开启复制粘贴功能且以base64插入 
                              name: 'file',  // 图片参数名
                              size: 3,  // 可选参数 图片大小，单位为M，1M = 1024kb
-                             action: `http://localhost:8080/api/uploads/image?path=${JSON.stringify(this.content)}`,  // 服务器地址, 如果action为空，则采用base64插入图片
+                             action: `http://118.89.177.170:3001/api/uploads/image?path=${JSON.stringify(this.content)}`,  // 服务器地址, 如果action为空，则采用base64插入图片
                              // response 为一个函数用来获取服务器返回的具体图片地址
                              // 例如服务器返回{code: 200; data:{ url: 'baidu.com'}}
                              // 则 return res.data.url
@@ -286,13 +286,16 @@ export default {
            this.$ajax.post('/api/denglu/states',this.admin)
           this.dialogVisible  = !this.dialogVisible
        },
-       no(){
-        this.$router.replace({
-                path: '/kong',
-                query: {
-                  t: Date.now()
-                }
-              })
+       no(e){
+         e.altKey = true
+         console.log(e.altKey)
+         
+        // this.$router.replace({
+        //         path: '/kong',
+        //         query: {
+        //           t: Date.now()
+        //         }
+        //       })
        },
 
            //搜索

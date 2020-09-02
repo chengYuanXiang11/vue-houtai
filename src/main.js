@@ -11,7 +11,16 @@ import 'default-passive-events'
 import axios from 'axios'
 import 'lib-flexible/flexible.js'
 import Debounce from './views/custom/antiShake'
+import VueLazyload from 'vue-lazyload'
 
+Vue.prototype.$store = store
+
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: require('./assets/beijing.jpeg'),
+  loading: require('./assets/logo.png'),
+  attempt: 1
+})
 
 
 // const BASEURL= process.env.NODE_ENV === 'production' ? '' : '/api'
@@ -70,9 +79,23 @@ import 'quill/dist/quill.bubble.css'
 Vue.use(VueQuillEditor)
 
 
+//yyyyyy
+// new Vue({
+//   router,
+//   store,
+//   render: h => h(App)
+// }).$mount('#app')
+//yyyyyyy
 
+//dd
 new Vue({
+  el: '#app',
   router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+  render: h => h(App),
+  mounted () {
+  // You'll need this for renderAfterDocumentEvent.
+  document.dispatchEvent(new Event('custom-rednder-trigger'))
+  // document.dispatchEvent(new Event('render-event')) 
+  }
+ });
+//dd

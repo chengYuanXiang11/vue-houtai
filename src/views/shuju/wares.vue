@@ -1,20 +1,22 @@
 <template>
   <div class="wares h100">
    <el-row class="h100" >
-     <el-col :span="4" :offset="1" :xs="{span:0,offset:0}" class="h100">
+     <el-col :span="4" :offset="1" :xs="{span:0,offset:0}" style="height: 800px;">
        <!-- :props="category" -->
        <el-tree :data="defaultProps" :default-expand-all="true"   @node-click="handleNodeClick" class="h100 eltree"></el-tree>
+       
      </el-col>
-     <el-col :span="18" :xs="{span:24,offset:0}">
-       <el-col class="boo">
-         <el-col :span="17" :xs="{span:19}" class="mar10">
+        <el-col :span="14" :xs="{span:19}" class="mar10">
            <el-input v-model="input" placeholder="请输入内容"  @input="addstore()"></el-input>
          </el-col>
   
        
-               <el-col :span="3"  :xs="{span:5}" >
-               <el-button type="primary" @click="save()">添加</el-button>
+               <el-col :span="5"  :xs="{span:5}" >
+               <el-button type="primary" @click="save()">添加商品</el-button>
                </el-col>
+     <el-col :span="18" :xs="{span:24,offset:0}">
+       <el-col class="boo">
+      
             <el-dialog 
                         title="提示"
                         class="zhong"
@@ -105,18 +107,12 @@
               </template>
             </el-table-column>
             
-             <el-table-column
-              type="index"
-                class="inde"
-              min-width="10" v-if="key"
-              :index="indexMethod">
-            </el-table-column>
            
             <el-table-column
-              label="名称"
+              label="名称"  prop="name"
+             show-overflow-tooltip
                min-width="25"
-              prop="name"
-              :fit="true">
+             >
             </el-table-column>
         
             <el-table-column
@@ -401,12 +397,12 @@ export default {
          this.dialogVisibles = !this.dialogVisibles 
          
          this.$ajax.put('/api/in/test',this.form).then((res)=>{
-            this.$router.replace({
-                path: '/kong',
-                query: {
-                  t: Date.now()
-                }
-              })
+            // this.$router.replace({
+            //     path: '/kong',
+            //     query: {
+            //       t: Date.now()
+            //     }
+            //   })
          })
       },
       //控制提示显示隐藏
@@ -427,12 +423,12 @@ export default {
              
               this.add = {}
               this.save()
-             this.$router.replace({
-                path: '/kong',
-                query: {
-                  t: Date.now()
-                }
-              })
+            //  this.$router.replace({
+            //     path: '/kong',
+            //     query: {
+            //       t: Date.now()
+            //     }
+            //   })
             })
          })
          
@@ -452,7 +448,8 @@ export default {
      handleSizeChange(val) {
         //每次点击更改条数值
         this.pagesize = val;
-        this.currentPage == 1?this.dis = 0:this.dis = this.pagesize * (this.currentPage-1)
+        this.currentPage = 1;
+        this.dis = 0;
         
        this.$ajax.post('/api/in/fen',{
                  params:{      
@@ -563,6 +560,7 @@ export default {
       /deep/ .el-dialog__wrapper div{
         width: 90%;
       }
+
       .boo{
         margin-bottom:10px
       }
@@ -577,6 +575,9 @@ export default {
         width: 90%;
       }
 }
-
+   /deep/.el-table  /deep/td{
+    border:1px solid #ebeef5;
+  }
   .cell{max-height: 23px !important;overflow:hidden;} 
+
 </style>

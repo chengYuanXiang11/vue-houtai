@@ -32,7 +32,7 @@
                     <el-col class="p">
                     
                          <el-col class="p_name">
-                            <img v-if="ket.icon" :src="ket.icon" class="avatar" >
+                            <img v-if="ket.icon" v-lazy="ket.icon" :key="ket.icon" class="avatar" >
                          评论人：{{ket.name}}
                      </el-col>
                       <el-col v-html="ket.content" class="p_content">
@@ -60,7 +60,7 @@
                       <!-- 回复列表 -->
                      <el-col v-for="(data,index) in replydata" :key="index + '+only'" :span="22" :offset="2"  >
                        <el-col v-show="huikey(data.cid,ket._id)" class="h">
-                         <el-col class="h_name"><span class="h_ren">  <img v-if="ket.icon" :src="ket.icon" class="avatar" >{{data.name}}</span>回复  <span>:</span> {{data.bname}}</el-col>
+                         <el-col class="h_name"><span class="h_ren">  <img v-if="data.icon" v-lazy="data.icon" :key="data.icon" class="avatar" >{{data.name}}</span>回复  <span>:</span> {{data.bname}}</el-col>
                           <el-col class="h_content" v-html="data.content"></el-col>
                           <el-col class="h_date">
                              <span class="s10px">
@@ -69,7 +69,7 @@
                             </el-col>
                           <el-col>
                           <span>
-                             <el-button size="small" class="p_span" @click="saveshan(data._id)" type="danger" icon="el-icon-delete" circle></el-button>                           
+                             <el-button size="small" class="p_span" v-if="shan(data.uid)" @click="saveshan(data._id)" type="danger" icon="el-icon-delete" circle></el-button>                           
                           </span>
                               <span>
                                  <el-button size="small"    type="primary" icon="el-icon-edit"  circle  class="p_span" @click="saverhui(data,ket)"></el-button>
@@ -170,7 +170,7 @@ export default {
            ImageExtend: {  // 如果不作设置，即{} 则依然开启复制粘贴功能且以base64插入 
                              name: 'file',  // 图片参数名
                              size: 3,  // 可选参数 图片大小，单位为M，1M = 1024kb
-                             action: `http://localhost:8080/api/uploads/image?path=${JSON.stringify(this.content)}`,  // 服务器地址, 如果action为空，则采用base64插入图片
+                             action: `http://118.89.177.170:3001/api/uploads/image?path=${JSON.stringify(this.content)}`,  // 服务器地址, 如果action为空，则采用base64插入图片
                              // response 为一个函数用来获取服务器返回的具体图片地址
                              // 例如服务器返回{code: 200; data:{ url: 'baidu.com'}}
                              // 则 return res.data.url
@@ -212,7 +212,7 @@ export default {
            ImageExtend: {  // 如果不作设置，即{} 则依然开启复制粘贴功能且以base64插入 
                              name: 'file',  // 图片参数名
                              size: 3,  // 可选参数 图片大小，单位为M，1M = 1024kb
-                             action: `http://localhost:8080/api/uploads/image?path=${JSON.stringify(this.commentcontent)}`,  // 服务器地址, 如果action为空，则采用base64插入图片
+                             action: `http://118.89.177.170:3001/api/uploads/image?path=${JSON.stringify(this.commentcontent)}`,  // 服务器地址, 如果action为空，则采用base64插入图片
                              response: (res) => {
                                  return res.url
                              }
@@ -232,7 +232,8 @@ export default {
  },
  created(){
    this.content = ''
-   if( this.$store.state.notice_adata==null){
+   
+  
         this.$ajax.post('/api/section/finde').then((res)=>{
            this.$store.state.notice_adata = res.data
            this.adata=this.$store.state.notice_adata
@@ -241,9 +242,8 @@ export default {
              value.date = this.jdate(value.date)
              })    
      })
-   }else{
-     this.adata=this.$store.state.notice_adata
-   }
+
+
      //评论
      this.$ajax.post('/api/comment/findcomment').then((res)=>{
           this.reply = res.data
@@ -376,6 +376,7 @@ saverhui(data,ket){
        },
        savehuiok(){
          this.comments.icon =  this.$store.state.icon
+           this.comments.uid =  this.$store.state.userid
             this.comments.content =  this.content
             this.$ajax.post('/api/reply/addreply',this.comments) 
 
@@ -509,7 +510,7 @@ saveshanok(){
 }
 .p_name{
   text-align: left;
-  margin-left:15%;
+  padding-left:15%;
   font-size:15px;
 
 }
@@ -534,9 +535,9 @@ saveshanok(){
 }
 .h_name{
    text-align: left;
-  margin-left:20%;
+  padding-left:20%;
   font-size:13px;
-   margin-top: 2px;
+   padding-top: 2px;
 }
 .h_content{
       font-size: 20px;
@@ -544,6 +545,10 @@ saveshanok(){
     text-indent: 1rem;
     text-align: left;
     padding: 10px 25%;
+}
+.h_content img,
+.p_content img{
+  width: 35%!important;
 }
 .h_date{
   text-align:right;

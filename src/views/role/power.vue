@@ -1,5 +1,5 @@
 <template>
-  <div id="adopt">
+  <div id="adopt" class="wares">
       <el-col class="zhong">
       
       </el-col>

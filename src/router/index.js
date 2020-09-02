@@ -4,8 +4,8 @@ import Login from '../views/login/login'
 import store from '../store'
 
 Vue.use(VueRouter)
-const scrollTop=0;
-  const routes = [
+
+ const routes = [
     {
       path: '/',//以“/”开头的嵌套路径会被当作根路径，所以子路由上不用加“/”;在生成路由时，主路由上的path会被自动添加到子路由之前，所以子路由上的path不用在重新声明主路由上的path了。
       name: 'login',
@@ -13,7 +13,8 @@ const scrollTop=0;
       // meta: { requiresAuth: true }
       meta: { isPublic: true,
         admin:true, 
-        user:true },
+        user:true ,
+      title:"登录"},
         beforeEnter: (to, from, next) => {
           if(localStorage.token && localStorage.ziong == 'true'){
             next('/statistics')
@@ -28,7 +29,8 @@ const scrollTop=0;
       component: () => import(/* webpackChunkName: "about" */ '../views/login/register'),
       meta: { isPublic: true,
         admin:true, 
-        user:true,}
+        user:true,
+        title:"注册"}
     },
   {
     path: '/Home',
@@ -39,9 +41,10 @@ const scrollTop=0;
         path: '/notice',//以“/”开头的嵌套路径会被当作根路径，所以子路由上不用加“/”;在生成路由时，主路由上的path会被自动添加到子路由之前，所以子路由上的path不用在重新声明主路由上的path了。
         name: 'notice', 
         meta:{
+          isPublic: true,
           admin:true, 
         user:true,
-
+        title:"评论"
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/shuju/Notice')
       }, {
@@ -61,7 +64,7 @@ const scrollTop=0;
         meta:{
           admin:true, 
         user:true,
-
+        title:"图表"
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/shuju/Statistics.vue')
       },
@@ -80,7 +83,7 @@ const scrollTop=0;
         meta:{
           admin:true, 
         user:true,
-
+        title:"商品"
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/shuju/wares')
       },{
@@ -89,7 +92,7 @@ const scrollTop=0;
         meta:{
           admin:true, 
           user:false,
-
+          title:"用户管理"
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/role/adopt')
       },{
@@ -98,7 +101,7 @@ const scrollTop=0;
         meta:{
           admin:true, 
           user:false,
-
+          title:"用户管理"
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/role/role')
       },{
@@ -107,6 +110,7 @@ const scrollTop=0;
         meta:{
           admin:true, 
           user:false,
+          title:"用户管理"
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/role/power')
       },{
@@ -162,6 +166,7 @@ const scrollTop=0;
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  
   routes
 })
 
@@ -172,7 +177,9 @@ VueRouter.prototype.push = function push(location) {
 }
 
 router.beforeEach((to,from,next)=>{
-
+  if (to.meta.title) {
+    document.title = to.meta.title;
+}
  //登录注册不添加禁止
       if(to.meta.isPublic){
         //登录注册不需要禁止

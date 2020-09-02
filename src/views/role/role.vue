@@ -1,11 +1,12 @@
 <template>
-  <div id="adopt">
+  <div id="adopt" class="wares">
       <el-col class="zhong">
       
       </el-col>
        <el-row>
      <el-col :span="5" :offset="1" :xs="{span:0,offset:0}">
       <el-tree
+      v-cloak
         :data="users"
        :default-expand-all="true"
         accordion
@@ -48,6 +49,7 @@
        <el-col>
           <el-col>
                   <el-table
+                  v-cloak
             ref="multipleTable"
             :data="tableData"
             tooltip-effect="dark"

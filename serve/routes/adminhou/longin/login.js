@@ -7,8 +7,6 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 var bcrypt = require('bcryptjs');
 mongoose.set('useFindAndModify', false)
-const Category = require('../../../models/Category')
-const Itemize= require('../../../models/Itemize')
 
 const jiami = async(req,res,next)=>{
   
@@ -132,11 +130,20 @@ router.post('/user',async(req,res)=>{
     res.send(article)
    
 })
-//修改密码
+
+//修改用户信息
 router.put("/test",async (req, res) => {
     const article = await Login.findByIdAndUpdate(req.body._id, req.body)
+    const com = await Reply.find({"icon":req.body.icon})
    
     res.send(article)
+})
+//修改评论和回复头像
+router.put("/tou",async (req, res) => {
+
+    await Reply.updateMany({"icon":req.body.aicon}, {"icon":req.body.bicon})
+    await Comment.updateMany({"icon":req.body.aicon}, {"icon":req.body.bicon})
+    res.send()
 })
 //玩一下ckooie
 router.post('/cookies', async(req,res)=>{

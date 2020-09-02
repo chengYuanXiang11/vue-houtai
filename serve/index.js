@@ -53,7 +53,7 @@ app.use(function(req, res, next) {
 // });
 
 
-// app.use(require('cors')())
+app.use(require('cors')())
 app.use(express.json())
 //图片等静态文件需要静态托管 
 app.use('/admin',express.static(__dirname +'/public'))
@@ -102,10 +102,10 @@ const upload = multer({ dest:__dirname +'/uploads'})
 
 //上传图片
 app.post('/api/upload',upload.single('file'),async(req,res)=>{
-  console.log(req)
+  
     const file =req.file
     file.url = `http://localhost:3001/uploads/${file.filename}`
-  
+    
     res.send(file)
 })
 
@@ -136,7 +136,7 @@ app.use(async(err,req,res,next)=>{
 
 
 
-app.listen(3001,()=>{
+app.listen(3002,()=>{
     console.log('http://localhost:3001/')
 })
 

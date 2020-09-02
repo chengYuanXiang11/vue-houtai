@@ -7,6 +7,7 @@
       <el-container  >
       
         <keep-alive>
+            <transition :name="this.$store.state.showPassZ?'bounce':'bounce2'">
             <el-aside width="auto" 
               class="abox1"
              v-show="this.$store.state.showPassZ">
@@ -14,6 +15,7 @@
            <ZNav ></ZNav>
           </keep-alive>
              </el-aside>
+               </transition>
         </keep-alive>
         
  
@@ -27,7 +29,10 @@
       
           <el-main class="home_main h100">
            
+                 <el-col style="backgroundColor:#fff;padding: 20px 0;" :span="22" :offset="1"  :xs="{span:24,offset:0}">
                 <router-view ></router-view>
+         
+            </el-col>
          
             
                
@@ -86,7 +91,40 @@ export default {
     top: 0px;
     z-index: 2
 }
+.bounce-enter-active {
+  animation: bounce-in 1.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s;
+}
+@keyframes bounce-in {
+  0% {
+ position: relative;
+ top: 2000px;
+  }
 
+  100% {
+  position: relative;
+ top: 00px;
+  }
+}
+.bounce2-enter-active {
+  animation: bounce-in2 1.5s;
+}
+.bounce2-leave-active {
+  animation: bounce-in2 .5s;
+}
+@keyframes bounce-in2 {
+  0% {
+ position: relative;
+ top: 0px;
+  }
+
+  100% {
+  position: relative;
+ top: 2000px;
+  }
+}
 @media screen and (max-width: 768px) {
 .el-header,
 .el-main{
@@ -96,11 +134,42 @@ section .abox1{
   position: absolute;
    z-index: 1000;
 }
+.bounce-enter-active {
+  animation: bounce-in 1.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s;
+}
+@keyframes bounce-in {
+  0% {
+display: none;
+  }
+
+  100% {
+ display: block;
+  }
+}
+.bounce2-enter-active {
+  animation: bounce-in2 1.5s;
+}
+.bounce2-leave-active {
+  animation: bounce-in2 .5s;
+}
+@keyframes bounce-in2 {
+  0% {
+ display: block;
+  }
+
+  100% {
+display: none;
+  }
+}
 }
 @media screen and (max-width:992px){
 .home_header,.home_main{
   margin-left: 0px;
 }
+
 }
  .abox1{
         position: relative;;

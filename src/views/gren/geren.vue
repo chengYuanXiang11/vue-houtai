@@ -22,7 +22,7 @@
                   <el-upload
                 
                   class="avatar-uploader"
-                  :action="'http://localhost:8080/api/upload'"
+                  :action="'http://118.89.177.170:3001/api/upload'"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   >
@@ -103,7 +103,7 @@ export default {
     data(){
       //验证邮箱
       const validateEmali = (rule, value, callback) => {
-        console.log(value) 
+        
            const reg1 = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
           if(!reg1.test(value)){
              
@@ -121,6 +121,7 @@ export default {
     
     
       return{ 
+        aicon:'',
       rules: {
           emali: [
               { validator: validateEmali, trigger: 'blur' }
@@ -134,23 +135,25 @@ export default {
           
         },
         activeName: 'first',
-  
+        a:null,
         ziong:null,
         fits: 'fill',
       }
     },
     created(){
+      console.log(this.$store.state.username)
       this.token=localStorage.getItem('token')
       this.ziong = Boolean(localStorage.ziong)
       this.$ajax.post('/api/denglu/profile',this.token).then((res)=>{
         this.toDate = res.data
-        console.log(this.toDate)
+       this.a = res.data.icon
+      
     })
     },
      methods: {
        handleAvatarSuccess(res, file) {
         this.$set(this.toDate,'icon',res.url)
-            this.$ajax.put('/api/denglu/test',this.toDate)
+            
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -168,23 +171,33 @@ export default {
          this.ziong = !this.ziong
           localStorage.setItem("ziong",String(this.ziong))
        }, 
-     onSubmit() {
-      //  修改用户信息
-         this.$ajax.put('/api/denglu/test',this.toDate)
-      },
          submitForm(formName) {
-
+  
         this.$refs[formName].validate((valid) => {
           if (valid) {
-              this.$ajax.put('/api/denglu/test',this.toDate).then((res)=>{
+            this.$ajax.put('/api/denglu/tou',{
+              "aicon":this.a,
+              "bicon":this.toDate.icon
+            })
+                  this.$ajax.put('/api/denglu/test',{data:this.toDate,name:this.$store.state.name}).then((res)=>{
                 this.$message({
                   message: '已修改成功',
                   type: 'success'
                 });
-              
+                  this.$store.commit('dispatchname',{
+                    name:this.toDate.name
+              })
+                  this.$router.replace({
+                path: '/kong',
+                query: {
+                  t: Date.now()
+                }
+              })
               }).catch(err => {
                 console.log(err);
               });
+           
+          
           } 
         });
       },
